@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import ContactList from "./ContactList";
 import inputs from "./inputs";
 import { v4 } from 'uuid';
+import styles from "./Contacts.module.css";
 function Contact() {
 
 
@@ -19,10 +20,9 @@ function Contact() {
   const clickHandler = () => {
     if (!contact.name || !contact.family || !contact.email || !contact.phone) {
       setAlert("please inter value");
-      setTimeout(() => {
-        setAlert("");
-      }, 3000);
+      return;
     }
+ 
     const newContact={...contact,id:v4()}
     setContacts((contacts) => [...contacts, newContact]);
     setContact({
@@ -41,9 +41,13 @@ function Contact() {
     setContacts(newContact)
   }
 
+  setTimeout(() => {
+    setAlert("");
+  }, 5000);
+
   return (
-    <div>
-      <div>
+    <div className={styles.container}>
+      <div className={styles.form}>
         {inputs.map((input,index) => (
           <input
           key={index}
@@ -56,7 +60,7 @@ function Contact() {
         ))}
         <button onClick={clickHandler}>Add Contact</button>
       </div>
-      <div>{alert && <p>{alert}</p>}</div>
+      <div className={styles.alert}>{alert && <p>{alert}</p>}</div>
       <ContactList contacts={contacts} deleteHandler={deleteHandler}/>
     </div>
   );
